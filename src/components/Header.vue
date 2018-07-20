@@ -23,7 +23,7 @@
     }
 
     img {
-        max-height: 200px;
+        max-height: 75px;
     }
 
 </style>

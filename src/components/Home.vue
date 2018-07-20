@@ -10,7 +10,7 @@
 
     export default {
         components:{
-            appPokemonGrid: PokemonGrid
+            appPokemonGrid: PokemonGrid,
         }
     }
 </script>

@@ -1,8 +1,6 @@
 <template>
     <div>
-        <!--<div class="row">-->
-            <app-header></app-header>
-        <!--</div>-->
+        <app-header></app-header>
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
@@ -10,7 +8,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
