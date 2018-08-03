@@ -1,9 +1,11 @@
 <template>
-
-    <div class="card-deck">
-        <app-pokemon v-for="pokemon in pokemons" :pokemon="pokemon"></app-pokemon>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card-deck">
+                <app-pokemon v-for="pokemon in pokemons" :pokemon="pokemon"></app-pokemon>
+            </div>
+        </div>
     </div>
-
 </template>
 
 <script>
@@ -18,68 +20,7 @@
 
         data() {
             return {
-                pokemons: [
-                    {
-                        number: 1,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih'
-                    },
-                    {
-                        number: 2,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih'
-                    },
-                    {
-                        number: 3,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih'
-                    },
-                    {
-                        number: 4,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih'
-                    },
-                    {
-                        number: 5,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih'
-                    },
-                    {
-                        number: 6,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih'
-                    },
-                    {
-                        number: 7,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih'
-                    },
-                    {
-                        number: 8,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih'
-                    },
-                    {
-                        number: 9,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih',
-                    },
-                    {
-                        number: 10,
-                        name: 'Bulbasaur',
-                        type: 'grass/poison',
-                        description: 'dsijadsiohdasoih'
-                    }
-                ]
+                pokemons: this.$store.getters.pokemonList
             }
         }
 

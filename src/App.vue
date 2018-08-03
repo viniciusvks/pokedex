@@ -2,11 +2,7 @@
     <div>
         <app-header></app-header>
         <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <app-home></app-home>
-                </div>
-            </div>
+          <router-view></router-view>
         </div>
     </div>
 </template>

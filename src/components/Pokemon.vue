@@ -1,39 +1,29 @@
 <template>
-    <div class="col-auto mb-3">
-        <div class="card" @click="toggleDetails">
+    <div class="col-auto mb-3" @click="showDetails">
+        <div class="card">
             <img class="card-img-top shadow-sm"  :src="'src/assets/static/pokemons/'+pokemon.number+'.png'" alt="Card image cap">
             <div class="card-footer">
                 <small>#{{ pokemon.number }}</small><br>
                 <h4>{{ pokemon.name }}</h4>
             </div>
         </div>
-        <app-pokemon-detail v-if="showDetails"></app-pokemon-detail>
     </div>
 </template>
 
 <script>
-
-    import PokemonDetail from './PokemonDetail';
-
     export default {
 
-        data() {
-            return {
-                showDetails: false
-            };
-        },
+        props:['pokemon'],
 
         methods: {
-            toggleDetails() {
-                this.showDetails = !this.showDetails;
+
+            showDetails() {
+                this.$router.push({
+                    path: '/pokemon/detail'
+                });
             }
-        },
 
-        components: {
-            appPokemonDetail: PokemonDetail
-        },
-
-        props:['pokemon']
+        }
 
     }
 </script>
