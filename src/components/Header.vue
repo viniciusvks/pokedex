@@ -16,6 +16,7 @@
 
     .jumbotron {
         background-color: #EF2835;
+        max-height: 75px;
     }
 
     .container {
@@ -23,7 +24,7 @@
     }
 
     img {
-        max-height: 75px;
+        max-height: 50px;
     }
 
 </style>

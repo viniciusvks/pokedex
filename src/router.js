@@ -7,9 +7,12 @@ Vue.use(VueRouter);
 
 const routes = [
 
-    {path: '/', component: Home},
-    {path: '/pokemon/detail', component: PokemonDetail}
+    {name: 'home', path: '/', component: Home},
+    {name: 'pokemon-detail', path: '/pokemon/detail/:id', component: PokemonDetail}
 
 ];
 
-export default new VueRouter({mode: 'history', routes});
+export default new VueRouter({
+	mode: 'history',
+	routes
+});

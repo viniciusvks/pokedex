@@ -19,12 +19,11 @@
 
             showDetails() {
                 this.$router.push({
-                    path: '/pokemon/detail'
+                    name: 'pokemon-detail',
+                    params: { id: this.pokemon.number }
                 });
             }
-
         }
-
     }
 </script>
 

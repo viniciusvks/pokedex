@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
@@ -163,8 +164,28 @@ export default new Vuex.Store({
         ]
     },
 
+	mutations: {
+		updatePokemonDetails(state, data) {
+
+		}
+	},
+
 	actions: {
-    	fetchPokemonDetails(context, state) {
+    	fetchPokemonDetails(context, id) {
+
+    		let pokemon = state.pokemonList.find(pokemon => {
+    			return pokemon.number === id;
+		    });
+
+    		axios.get('https://pokeapi.co/api/v2/pokemon-species/', {
+				params: {
+					name: name
+				}
+		    }).then(response => {
+		    	console.log(response);
+		    }).catch(error => {
+			    console.log(error);
+		    });
 
 	    }
 	},
