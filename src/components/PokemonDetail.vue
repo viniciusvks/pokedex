@@ -46,19 +46,18 @@
 
         methods: {
 
-        	fetchData() {
+            fetchData() {
 
-        		this.loading = true;
+                this.loading = true;
 
-        		setTimeout(function () {
+                    setTimeout(function () {
 
-        			console.log('timeout');
-                    this.loading = this.error = false;
-			        this.fetched = true;
-                    console.log(this.loading + ', ' + this.fetched);
+                        this.$store.dispatch('fetchPokemonDetails', this.$route.params.id);
+                        this.loading = this.error = false;
+                        this.fetched = true;
 
-		        }.bind(this), 500);
-            }
+                    }.bind(this), 500);
+                }
         }
     }
 </script>

@@ -14,25 +14,8 @@
 
     export default {
 
-    	created() {
-		    this.fetchPokemonData(1);
-        },
-
         components: {
             appPokemon: Pokemon
-        },
-
-        methods: {
-
-    		fetchPokemonData(id){
-
-			    let pokemon = this.pokemons.find(pokemon => {
-				    return pokemon.number === id;
-			    });
-
-			    console.log(JSON.stringify(pokemon,null,4));
-            }
-
         },
 
         data() {
