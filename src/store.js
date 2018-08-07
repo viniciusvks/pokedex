@@ -177,16 +177,29 @@ export default new Vuex.Store({
 
     	fetchPokemonDetails(context, id) {
 
-    		let pokemon = context.state.pokemonList.find(pokemon => {
-    			return pokemon.number === id;
-		    });
+            return new Promise((resolve, reject) => {
 
-    		axios.get(`pokemon/${pokemon.number}/`
-    		).then(response => {
-		    	console.log(response);
-		    }).catch(error => {
-			    console.log(error);
-		    });
+                let pokemon = context.state.pokemonList.find(pokemon => {
+                    return pokemon.number === id;
+                });
+
+                axios.get(`pokemon/${pokemon.number}/`
+                ).then(response => {
+
+                    pokemon = context.commit('updatePokemonDetails', {
+                        pokemon: pokemon,
+                        data: response.data
+                    });
+
+                    resolve(pokemon);
+
+                }).catch(error => {
+
+                    reject(error);
+
+                });
+
+            });
 
 	    }
 	},
