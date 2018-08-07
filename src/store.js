@@ -1,25 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-// import Pokedex from 'pokeapi-js-wrapper';
-
-const Pokeapi = require('pokeapi-js-wrapper');
-const pokedex = new Pokeapi.Pokedex({
-    protocol: 'https',
-    hostName: 'pokeapi.salestock.net',
-    timeout: 60 * 1000
-});
 
 axios.defaults.baseURL = 'https://pokeapi.co/api/v2/';
 axios.defaults.headers.get['Content-Type'] = 'jsonp';
-
-// const options = {
-//     protocol: 'https',
-//     hostName: 'localhost:443',
-//     versionPath: '/api/v2/',
-//     cache: true,
-//     timeout: 5 * 1000 // 5s
-// };
 
 Vue.use(Vuex);
 
@@ -197,33 +181,12 @@ export default new Vuex.Store({
     			return pokemon.number === id;
 		    });
 
-            const testURL = `https://pokeapi.salestock.net/api/v2/pokemon/${pokemon.number}/`;
-            const myInit = {
-                method: 'GET',
-                mode: 'no-cors'
-            };
-
-            const myRequest = new Request(testURL, myInit);
-
-            fetch(myRequest).then(function(response) {
-                console.log(response);
-            }).catch(function(e){
-                console.log(JSON.stringify(e));
-            });
-
-            // pokedex.getPokemonByName(pokemon.number)
-            //     .then(function(response) {
-            //         console.log(response);
-            //     }).catch(error => {
-            //         console.log(error);
-            //     });
-
-    		// axios.get(`pokemon-species/${pokemon.number}/`
-    		// ).then(response => {
-		    // 	console.log(response);
-		    // }).catch(error => {
-			//     console.log(error);
-		    // });
+    		axios.get(`pokemon/${pokemon.number}/`
+    		).then(response => {
+		    	console.log(response);
+		    }).catch(error => {
+			    console.log(error);
+		    });
 
 	    }
 	},
