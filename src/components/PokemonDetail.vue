@@ -11,7 +11,7 @@
                 <!--<img class="card-img-top shadow-sm"  :src="'src/assets/static/pokemons/'+this.$route.params.id+'.png'" alt="Card image cap">-->
             </div>
             <div class="col-6 col-md-4">
-                <div class="col-12 ">{{ this.data.hasOwnProperty('name') ? this.data.name : '' }}</div>
+                <div class="col-12 ">  {{ this.data.hasOwnProperty('name') ? this.data.name : '' }} */</div>
                 <div class="col-12 ">Pokémon type:</div>
                 <div class="col-12 ">Pokémon type: {{ this.data.hasOwnProperty('types') ? this.data.types.join('|') : '' }}</div>
                 <div class="col-12 ">Pokémon description</div>
@@ -44,9 +44,7 @@
         },
 
         watch: {
-
 	        '$route': 'fetchData'
-
         },
 
         methods: {
@@ -63,9 +61,8 @@
 
                     this.fetched = true;
                     this.loading = this.error = false;
-                    this.data = data;
-                    console.log(this.data.type);
-                    console.log(data);
+
+                    this.mountData(data);
 
                 }).catch(error => {
 
@@ -74,6 +71,14 @@
                     console.log(error);
 
                 });
+            },
+
+            mountData(data) {
+
+                this.data.number = data.number;
+                this.data.name = data.name;
+                this.data.types = ['test','test'];
+
             }
         }
     }

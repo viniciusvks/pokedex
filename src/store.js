@@ -168,7 +168,12 @@ export default new Vuex.Store({
     },
 
 	mutations: {
-		updatePokemonDetails(state, data) {
+		updatePokemonDetails(state, details) {
+
+		    let pokemon = details.pokemon;
+		    pokemon.types = details.data.types;
+            // console.log(JSON.stringify(details, null, 4));
+		    // return pokemon;
 
 		}
 	},
@@ -186,10 +191,12 @@ export default new Vuex.Store({
                 axios.get(`pokemon/${pokemon.number}/`
                 ).then(response => {
 
-                    pokemon = context.commit('updatePokemonDetails', {
+                    context.commit('updatePokemonDetails', {
                         pokemon: pokemon,
                         data: response.data
                     });
+
+                    console.log("returned pokemon: "+JSON.stringify(pokemon, null, 4));
 
                     resolve(pokemon);
 
