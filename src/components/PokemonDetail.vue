@@ -11,10 +11,11 @@
                 <!--<img class="card-img-top shadow-sm"  :src="'src/assets/static/pokemons/'+this.$route.params.id+'.png'" alt="Card image cap">-->
             </div>
             <div class="col-6 col-md-4">
-                <div class="col-12 ">  {{ this.data.hasOwnProperty('name') ? this.data.name : '' }} */</div>
-                <div class="col-12 ">Pokémon type:</div>
-                <div class="col-12 ">Pokémon type: {{ this.data.hasOwnProperty('types') ? this.data.types.join('|') : '' }}</div>
-                <div class="col-12 ">Pokémon description</div>
+                <div class="col-12">  {{ this.data.hasOwnProperty('name') ? this.data.name : '' }} </div>
+                <div class="row">
+                    <div :class="typeColClass" v-for="type in this.data.types"> {{ type.type.name }}</div>
+                </div>
+                <div class="col-12">Pokémon description</div>
             </div>
             <div class="col-12">Evolution chain</div>
         </div>
@@ -35,7 +36,12 @@
         data() {
         	return {
 
-        	    data: null,
+        	    data: {
+        	    	number: '',
+        	    	name: '',
+                    types: [],
+                    description: ''
+                },
         		loading: true,
 		        error: false,
 		        fetched: false
@@ -77,10 +83,22 @@
 
                 this.data.number = data.number;
                 this.data.name = data.name;
-                this.data.types = ['test','test'];
+                this.data.types = data.types;
+
+                console.log(data);
 
             }
+
+        },
+
+        computed: {
+
+	        typeColClass() {
+		        return `col-${ 12/this.data.types.length }`;
+            }
+
         }
+
     }
 </script>
 

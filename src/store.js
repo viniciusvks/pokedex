@@ -171,7 +171,13 @@ export default new Vuex.Store({
 		updatePokemonDetails(state, details) {
 
 		    let pokemon = details.pokemon;
+
+			let flavorTextEntry = details.data.species.find(entry => {
+				return entry.language.name === "en";
+			});
+
 		    pokemon.types = details.data.types;
+			pokemon.description = flavorTextEntry.flavor_text;
             // console.log(JSON.stringify(details, null, 4));
 		    // return pokemon;
 
@@ -188,15 +194,22 @@ export default new Vuex.Store({
                     return pokemon.number === id;
                 });
 
-                axios.get(`pokemon/${pokemon.number}/`
-                ).then(response => {
+                axios.get(`pokemon/${pokemon.number}/`).then(response => {
+
+                	let details = response.data;
+
+	                this.dispatch( 'fetchPokemonSpecies', pokemon.number).then(response => {
+
+	                	details.species = response.data;
+
+	                }).catch(error => {
+		                reject(error);
+	                });
 
                     context.commit('updatePokemonDetails', {
                         pokemon: pokemon,
-                        data: response.data
+                        data: details
                     });
-
-                    console.log("returned pokemon: "+JSON.stringify(pokemon, null, 4));
 
                     resolve(pokemon);
 
@@ -208,7 +221,21 @@ export default new Vuex.Store({
 
             });
 
-	    }
+	    },
+
+		fetchPokemonSpecies(context, id) {
+
+			return new Promise((resolve, reject) => {
+
+				axios.get(`pokemon-species/${id}/`
+				).then(response => {
+					resolve(response);
+				}).catch(error => {
+					reject(error);
+				});
+
+			});
+		}
 	},
 
     getters: {
