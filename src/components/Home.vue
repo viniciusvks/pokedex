@@ -1,7 +1,7 @@
 <template>
-    <div class="container">
+    <!--<div class="container">-->
         <app-pokemon-grid></app-pokemon-grid>
-    </div>
+    <!--</div>-->
 </template>
 
 <script>

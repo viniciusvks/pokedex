@@ -1,31 +1,40 @@
 <template>
-    <div>
-        <div v-if="loading">
+    <div class="col-12">
+        <div class="row" v-if="loading">
             Loading...
         </div>
-        <div v-if="error">
+        <div class="row" v-if="error">
             Error fetching pokemon
         </div>
         <div class="row" v-if="fetched">
-            <div class="col-12 col-md-8">
+            <div class="col-8">
                 <!--<img class="card-img-top shadow-sm"  :src="'src/assets/static/pokemons/'+this.$route.params.id+'.png'" alt="Card image cap">-->
             </div>
-            <div class="col-6 col-md-4">
-                <div class="col-12">  {{ this.data.hasOwnProperty('name') ? this.data.name : '' }} </div>
+            <div class="col-4">
                 <div class="row">
-                    <div :class="typeColClass" v-for="type in this.data.types"> {{ type.type.name }}</div>
+                    <div class="col-12 text-center">  {{ this.data.name }} </div>
+                    <div class="col justify-content-center" v-for="type in this.data.types"> {{ type.type.name }}</div>
+                    <div class="col-12">Pokémon description</div>
+                    <div class="col-12">{{ this.data.description }} </div>
                 </div>
-                <div class="col-12">Pokémon description</div>
             </div>
-            <div class="col-12">Evolution chain</div>
+            <div class="col-12 text-center">Evolution chain</div>
+            <app-evolution-chain :data=this.data.evolutionChain></app-evolution-chain>
         </div>
     </div>
 </template>
 
 <script>
+
+    import EvolutionChain from './EvolutionChain';
+
     export default {
 
         name: "PokemonDetail",
+
+        components: {
+            appEvolutionChain: EvolutionChain
+        },
 
         created() {
 
@@ -40,7 +49,8 @@
         	    	number: '',
         	    	name: '',
                     types: [],
-                    description: ''
+                    description: '',
+                    evolutionChain: []
                 },
         		loading: true,
 		        error: false,
@@ -84,17 +94,13 @@
                 this.data.number = data.number;
                 this.data.name = data.name;
                 this.data.types = data.types;
+                this.data.description = data.description;
+                this.data.evolutionChain = [
+                    {id: this.data.number},
+                    {id: this.data.number},
+                    {id: this.data.number}
+                ];
 
-                console.log(data);
-
-            }
-
-        },
-
-        computed: {
-
-	        typeColClass() {
-		        return `col-${ 12/this.data.types.length }`;
             }
 
         }

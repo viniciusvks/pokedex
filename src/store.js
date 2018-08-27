@@ -168,18 +168,26 @@ export default new Vuex.Store({
     },
 
 	mutations: {
-		updatePokemonDetails(state, details) {
+		updatePokemonDetails(state, data) {
 
-		    let pokemon = details.pokemon;
+		    let pokemon = data.pokemon;
 
-			let flavorTextEntry = details.data.species.find(entry => {
+			let flavorTextEntries = data.species.flavor_text_entries.filter(entry => {
 				return entry.language.name === "en";
 			});
 
-		    pokemon.types = details.data.types;
-			pokemon.description = flavorTextEntry.flavor_text;
-            // console.log(JSON.stringify(details, null, 4));
-		    // return pokemon;
+			let uniqueEntries = [];
+
+            flavorTextEntries.forEach(function (textEntry) {
+
+                if(uniqueEntries.indexOf(textEntry.flavor_text) === -1) {
+                    uniqueEntries.push(textEntry.flavor_text);
+                }
+
+            }.bind(this));
+
+		    pokemon.types = data.details.types;
+		    pokemon.description = uniqueEntries.join(' ');
 
 		}
 	},
@@ -200,18 +208,20 @@ export default new Vuex.Store({
 
 	                this.dispatch( 'fetchPokemonSpecies', pokemon.number).then(response => {
 
-	                	details.species = response.data;
+                        let species = response.data;
+
+                        context.commit('updatePokemonDetails', {
+                            pokemon: pokemon,
+                            details: details,
+                            species: species
+
+                        });
+
+                        resolve(pokemon);
 
 	                }).catch(error => {
 		                reject(error);
 	                });
-
-                    context.commit('updatePokemonDetails', {
-                        pokemon: pokemon,
-                        data: details
-                    });
-
-                    resolve(pokemon);
 
                 }).catch(error => {
 
