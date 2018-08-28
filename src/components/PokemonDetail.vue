@@ -1,25 +1,22 @@
 <template>
     <div class="col-12">
-        <div class="row" v-if="loading">
-            Loading...
-        </div>
-        <div class="row" v-if="error">
-            Error fetching pokemon
-        </div>
-        <div class="row" v-if="fetched">
+        <app-loading-panel v-if="this.currentStatus === status.LOADING"></app-loading-panel>
+        <app-error-panel v-if="this.currentStatus === status.ERROR"></app-error-panel>
+        <div class="row" v-if="this.currentStatus === status.FETCHED">
             <div class="col-8">
-                <!--<img class="card-img-top shadow-sm"  :src="'src/assets/static/pokemons/'+this.$route.params.id+'.png'" alt="Card image cap">-->
+                <div class="col-12">{{ this.data.description }} </div>
             </div>
             <div class="col-4">
-                <div class="row">
+                <div class="row justify-content-center">
+                    <img class="pokemon-img" :src="this.data.image">
                     <div class="col-12 text-center">  {{ this.data.name }} </div>
-                    <div class="col justify-content-center" v-for="type in this.data.types"> {{ type.type.name }}</div>
-                    <div class="col-12">Pokémon description</div>
-                    <div class="col-12">{{ this.data.description }} </div>
+                    <div class="media" v-for="type in this.data.types">
+                        <img :src="type">
+                    </div>
                 </div>
             </div>
             <div class="col-12 text-center">Evolution chain</div>
-            <app-evolution-chain :data=this.data.evolutionChain></app-evolution-chain>
+            <app-evolution-chain :pokemonName=this.data.name :chain=this.data.evolutionChain></app-evolution-chain>
         </div>
     </div>
 </template>
@@ -27,13 +24,18 @@
 <script>
 
     import EvolutionChain from './EvolutionChain';
+    import LoadingPanel from './LoadingPanel';
+    import ErrorPanel from './ErrorPanel';
+    import { status } from '../config';
 
     export default {
 
         name: "PokemonDetail",
 
         components: {
-            appEvolutionChain: EvolutionChain
+            appEvolutionChain: EvolutionChain,
+            appLoadingPanel: LoadingPanel,
+            appErrorPanel: ErrorPanel
         },
 
         created() {
@@ -43,19 +45,22 @@
         },
 
         data() {
+
         	return {
 
         	    data: {
+
         	    	number: '',
         	    	name: '',
+                    image: '',
                     types: [],
                     description: '',
                     evolutionChain: []
-                },
-        		loading: true,
-		        error: false,
-		        fetched: false
 
+                },
+
+                status: status,
+                currentStatus: status.LOADING
             }
         },
 
@@ -67,23 +72,16 @@
 
             fetchData() {
 
-                this.loading = true;
-                this.$store.dispatch(
+                this.currentStatus = status.LOADING;
 
-                    'fetchPokemonDetails',
-                    this.$route.params.id
+                this.$store.dispatch( 'fetchPokemonDetails', this.$route.params.id).then(data => {
 
-                ).then(data => {
-
-                    this.fetched = true;
-                    this.loading = this.error = false;
-
+                    this.currentStatus = status.FETCHED;
                     this.mountData(data);
 
                 }).catch(error => {
 
-                    this.error = true;
-                    this.fetched = this.loading = false;
+                    this.currentStatus = status.ERROR;
                     console.log(error);
 
                 });
@@ -93,18 +91,16 @@
 
                 this.data.number = data.number;
                 this.data.name = data.name;
-                this.data.types = data.types;
+                this.data.image = require(`../assets/static/pokemons/${data.number}.png`);
+                this.data.types = data.types.map(type => {
+                    return require(`../assets/types/${type.type.name}.png`);
+                });
+
                 this.data.description = data.description;
-                this.data.evolutionChain = [
-                    {id: this.data.number},
-                    {id: this.data.number},
-                    {id: this.data.number}
-                ];
+                this.data.evolutionChain = data.evolutionChain;
 
             }
-
         }
-
     }
 </script>
 
@@ -112,6 +108,22 @@
 
   div {
     border: solid 1px #babaca;
+  }
+
+  .pokemon-img{
+      margin-left: auto;
+      margin-right: auto;
+      width: 75%;
+      height: 50%;
+      -webkit-filter: blur(50px);
+      -moz-filter: blur(50px);
+      -o-filter: blur(50px);
+      -ms-filter: blur(50px);
+      filter: blur(50px);
+  }
+
+  .media img{
+      height: 50px;
   }
 
 </style>

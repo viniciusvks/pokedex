@@ -1,7 +1,8 @@
 <template>
     <div class="jumbotron jumbotron-fluid sticky-top">
         <div class="container">
-            <img src="../assets/images/logo.png" alt="">
+            <!--<img src="../assets/images/logo.png" alt="">-->
+            Pokedex
         </div>
     </div>
 </template>

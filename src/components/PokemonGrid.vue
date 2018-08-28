@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="card-deck">
-                <app-pokemon v-for="pokemon in pokemons" :pokemon="pokemon"></app-pokemon>
+                <app-pokemon v-for="pokemon in pokemonList" :pokemon="pokemon"></app-pokemon>
             </div>
         </div>
     </div>
@@ -20,7 +20,7 @@
 
         data() {
             return {
-                pokemons: this.$store.getters.pokemonList
+                pokemonList: this.$store.getters.pokemonList
             }
         }
 
