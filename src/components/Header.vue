@@ -1,6 +1,8 @@
 <template>
     <div class="jumbotron jumbotron-fluid sticky-top p-3">
-        <h6 class=" display-4">Pokedex</h6>
+        <h6 class=" display-4">
+            <router-link :to="{ name: 'home' }"> Pokedex </router-link>
+        </h6>
     </div>
 </template>
 
@@ -20,6 +22,11 @@
 
     .container {
         text-align: center;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
     }
 
 </style>

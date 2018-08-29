@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="card-deck">
-                <app-pokemon v-for="pokemon in pokemonList" :pokemon="pokemon"></app-pokemon>
+                <app-pokemon v-for="pokemon in pokemonList" :pokemon="pokemon" :key="pokemon.number"></app-pokemon>
             </div>
         </div>
     </div>

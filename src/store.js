@@ -190,8 +190,15 @@ export default new Vuex.Store({
 
             }.bind(this));
 
+            let genera = data.species.genera.find(entry => {
+
+                return entry.language.name === "en";
+
+            });
+
 		    pokemon.types = data.details.types;
 		    pokemon.description = uniqueEntries.join(' ');
+		    pokemon.genera = genera.genus;
 		    pokemon.evolutionChain = data.evolutionChain;
 
 		}
@@ -205,6 +212,7 @@ export default new Vuex.Store({
 
 	            id = parseInt(id);
                 let pokemon = context.state.pokemonList.find(pokemon => {
+                	console.log(pokemon.number+' === '+id);
                     return pokemon.number === id;
                 });
 
