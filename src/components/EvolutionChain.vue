@@ -34,7 +34,7 @@
             parseChain() {
 
                 this.parseMethods[this.pokemon.evolutionChainType].call();
-                console.log(this.parsedChain);
+                // console.log(this.parsedChain);
             },
 
             parseLinearChain() {
@@ -47,7 +47,7 @@
 
                         let name = pokemon.hasOwnProperty('alias') ? pokemon.alias : pokemon.name.toLowerCase();
 
-                        console.log(name + ' === ' + evolutionStage.species.name);
+                        // console.log(name + ' === ' + evolutionStage.species.name);
                         return name === evolutionStage.species.name;
                     }.bind(this));
 

@@ -1,9 +1,6 @@
 <template>
-    <div class="jumbotron jumbotron-fluid sticky-top">
-        <div class="container">
-            <!--<img src="../assets/images/logo.png" alt="">-->
-            Pokedex
-        </div>
+    <div class="jumbotron jumbotron-fluid sticky-top p-3">
+        <h6 class=" display-4">Pokedex</h6>
     </div>
 </template>
 
@@ -17,15 +14,12 @@
 
     .jumbotron {
         background-color: #EF2835;
-        max-height: 75px;
+        color: #ebebeb;
+
     }
 
     .container {
         text-align: center;
-    }
-
-    img {
-        max-height: 50px;
     }
 
 </style>

@@ -20,7 +20,7 @@ export default new Vuex.Store({
 	        {number: 5, name: 'Charmeleon', evolutionChainType: evolutionChainType.LINEAR},
 	        {number: 6, name: 'Charizard', evolutionChainType: evolutionChainType.LINEAR},
 	        {number: 7, name: 'Squirtle', evolutionChainType: evolutionChainType.LINEAR},
-	        {number: 8, name: 'Warturtle', evolutionChainType: evolutionChainType.LINEAR},
+	        {number: 8, name: 'Wartortle', evolutionChainType: evolutionChainType.LINEAR},
 	        {number: 9, name: 'Blastoise', evolutionChainType: evolutionChainType.LINEAR},
 	        {number: 10, name: 'Caterpie', evolutionChainType: evolutionChainType.LINEAR},
 	        {number: 11, name: 'Metapod', evolutionChainType: evolutionChainType.LINEAR},
@@ -165,10 +165,13 @@ export default new Vuex.Store({
 	        {number: 150, name: 'Mewtwo', evolutionChainType: evolutionChainType.LINEAR},
 	        {number: 151, name: 'Mew', evolutionChainType: evolutionChainType.LINEAR}
 
-        ]
+        ],
+
+	    fetchedPokemons: []
     },
 
 	mutations: {
+
 		updatePokemonDetails(state, data) {
 
 		    let pokemon = data.pokemon;
@@ -190,7 +193,6 @@ export default new Vuex.Store({
 		    pokemon.types = data.details.types;
 		    pokemon.description = uniqueEntries.join(' ');
 		    pokemon.evolutionChain = data.evolutionChain;
-		    // console.log(data.evolutionChain);
 
 		}
 	},
@@ -201,9 +203,15 @@ export default new Vuex.Store({
 
             return new Promise((resolve, reject) => {
 
+	            id = parseInt(id);
                 let pokemon = context.state.pokemonList.find(pokemon => {
                     return pokemon.number === id;
                 });
+
+                if(context.state.fetchedPokemons.indexOf(pokemon.number) > -1) {
+                	resolve(pokemon);
+                	return;
+                }
 
                 axios.get(`pokemon/${pokemon.number}/`).then(response => {
 
@@ -226,6 +234,7 @@ export default new Vuex.Store({
 
                             });
 
+	                        context.state.fetchedPokemons.push(pokemon.number);
                             resolve(pokemon);
 
                         }).catch(error => {
@@ -251,9 +260,9 @@ export default new Vuex.Store({
     		return state.pokemonList;
 	    },
 
-	    status(state) {
-    	    return state.status;
-        }
+	    fetchedPokemons(state) {
+    		return state.fetchedPokemons;
+	    }
     }
 
 });

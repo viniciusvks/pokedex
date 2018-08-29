@@ -4,12 +4,14 @@
         <app-error-panel v-if="this.currentStatus === status.ERROR"></app-error-panel>
         <div class="row" v-if="this.currentStatus === status.FETCHED">
             <div class="col-8">
-                <div class="col-12">{{ this.data.description }} </div>
+                <div class="col-12">
+                    <p class="text-justify">{{ this.data.description }}</p>
+                </div>
             </div>
             <div class="col-4">
                 <div class="row justify-content-center">
                     <img class="pokemon-img" :src="this.data.image">
-                    <div class="col-12 text-center">  {{ this.data.name }} </div>
+                    <div class="col-12 text-center align-middle">  <h6>{{ this.data.name }}</h6> </div>
                     <div class="media" v-for="type in this.data.types">
                         <img :src="type">
                     </div>
@@ -73,7 +75,7 @@
             fetchData() {
 
                 this.currentStatus = status.LOADING;
-
+                console.log('vai chamar fetchPokemonDetails');
                 this.$store.dispatch( 'fetchPokemonDetails', this.$route.params.id).then(data => {
 
                     this.currentStatus = status.FETCHED;
@@ -115,15 +117,15 @@
       margin-right: auto;
       width: 75%;
       height: 50%;
-      -webkit-filter: blur(50px);
-      -moz-filter: blur(50px);
-      -o-filter: blur(50px);
-      -ms-filter: blur(50px);
-      filter: blur(50px);
+      /*-webkit-filter: blur(50px);*/
+      /*-moz-filter: blur(50px);*/
+      /*-o-filter: blur(50px);*/
+      /*-ms-filter: blur(50px);*/
+      /*filter: blur(50px);*/
   }
 
   .media img{
-      height: 50px;
+      height: 40px;
   }
 
 </style>
