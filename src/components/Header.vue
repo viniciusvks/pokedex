@@ -20,10 +20,6 @@
 
     }
 
-    .container {
-        text-align: center;
-    }
-
     a {
         text-decoration: none;
         color: inherit;

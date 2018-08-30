@@ -1,5 +1,5 @@
 <template>
-    <component :is=layoutComponent :parsedChain=parsedChain></component>
+    <component :is=layoutComponent :chain=chain></component>
 </template>
 
 <script>
@@ -12,139 +12,67 @@
         name: "EvolutionChain",
         props: ['pokemonName', 'chain'],
 
-        created() {
+	    components: {
 
-            this.pokemon = this.findPokemonByName(this.pokemonName);
-            this.parseChain();
-        },
+		    linearLayout: Linear,
+		    branchLayout: Branch
 
-        components: {
+	    },
 
-            appLinear: Linear,
-            appBranch: Branch
+	    created() {
 
-        },
+		    this.pokemon = this.findPokemonByName(this.pokemonName);
+		    this.layoutComponent = this.getLayoutComponent(this.pokemon);
+	    },
+
+	    data() {
+
+		    return {
+
+			    pokemon: {},
+			    layoutComponent: "",
+                defaultLayoutComponent: "linearLayout",
+			    customLayoutComponents: [
+
+				    {pokemonNumber: 133, layoutComponent: "branchLayout"},
+				    {pokemonNumber: 134, layoutComponent: "branchLayout"},
+				    {pokemonNumber: 135, layoutComponent: "branchLayout"},
+				    {pokemonNumber: 136, layoutComponent: "branchLayout"}
+
+			    ]
+		    }
+	    },
 
         methods: {
 
-            parseChain() {
+	        getLayoutComponent(pokemon) {
 
-                let parseConfig = this.getParseConfig(this.pokemon);
-                this.layoutComponent = parseConfig.layoutComponent;
-                parseConfig.method.call();
-            },
+		        let len = this.customLayoutComponents.length;
 
-            linearParse() {
+		        for (let i = 0; i < len; i++) {
+			        if(this.customLayoutComponents[i].pokemonNumber === pokemon.number) {
+				        return this.customLayoutComponents[i];
+			        }
+		        }
 
-                let evolutionStage = this.chain.chain;
+		        return this.defaultLayoutComponent;
 
-                while (true){
+	        },
 
-                    let evolvedPokemon = this.$store.getters.pokemonList.find(function(pokemon){
+	        findPokemonByName(requestedPokemonName) {
 
-                        let name = pokemon.hasOwnProperty('alias') ? pokemon.alias : pokemon.name.toLowerCase();
-                        return name === evolutionStage.species.name;
+		        requestedPokemonName = requestedPokemonName.toLowerCase();
 
-                    }.bind(this));
+		        return this.$store.getters.pokemonList.find(function(currentPokemon){
 
-                    this.parsedChain.push({
-                        pokemon: evolvedPokemon,
-                        image: (typeof evolvedPokemon === 'undefined') ? require('../../assets/images/notknown.png')
-                            : require(`../../assets/static/pokemons/${evolvedPokemon.number}.png`)
-                    });
+			        let currentPokemonName = currentPokemon.hasOwnProperty('alias') ? currentPokemon.alias
+				        : currentPokemon.name.toLowerCase();
 
-                    if(evolutionStage.evolves_to.length === 0) {
-                        break;
-                    }
+			        return currentPokemonName === requestedPokemonName;
 
-                    evolutionStage = evolutionStage.evolves_to[0];
-                }
-            },
+		        }.bind(this));
 
-            branchParse() {
-
-                let firstStage = this.chain.chain;
-
-                let evolvedPokemon = this.findPokemonByName(firstStage.species.name);
-
-                this.parsedChain.push({
-                    pokemon: evolvedPokemon,
-                    image: (typeof evolvedPokemon === 'undefined') ? require('../../assets/images/notknown.png')
-                        : require(`../../assets/static/pokemons/${evolvedPokemon.number}.png`)
-                });
-
-                let evolutions = [];
-
-                firstStage.evolves_to.forEach(function (pokemon) {
-
-                    let evolvedPokemon = this.findPokemonByName(pokemon.species.name);
-
-                    evolutions.push({
-                        pokemon: evolvedPokemon,
-                        image: (typeof evolvedPokemon === 'undefined') ? require('../../assets/images/notknown.png')
-                            : require(`../../assets/static/pokemons/${evolvedPokemon.number}.png`)
-                    });
-
-                }.bind(this));
-
-                this.parsedChain.push(evolutions);
-
-            },
-
-            findPokemonByName(requestedPokemonName) {
-
-                requestedPokemonName = requestedPokemonName.toLowerCase();
-
-                return this.$store.getters.pokemonList.find(function(currentPokemon){
-
-                    let currentPokemonName = currentPokemon.hasOwnProperty('alias') ? currentPokemon.alias
-                        : currentPokemon.name.toLowerCase();
-
-                    // console.log(currentPokemonName+' === '+requestedPokemonName);
-                    return currentPokemonName === requestedPokemonName;
-
-                }.bind(this));
-
-            },
-
-            getParseConfig(pokemon) {
-
-                let len = this.customParseConfig.length;
-
-                for (let i = 0; i < len; i++) {
-                    if(this.customParseConfig[i].pokemonNumber === pokemon.number) {
-                        return this.customParseConfig[i];
-                    }
-                }
-
-                return this.defaultParseConfig;
-
-            }
-        },
-
-        data() {
-
-            return {
-
-                pokemon: {},
-                parsedChain: [],
-                layoutComponent: "",
-                defaultParseConfig: {
-
-                    method: this.linearParse,
-                    layoutComponent: "appLinear"
-
-                },
-                customParseConfig: [
-
-                    {pokemonNumber: 133, method: this.branchParse, layoutComponent: "appBranch"},
-                    {pokemonNumber: 134, method: this.branchParse, layoutComponent: "appBranch"},
-                    {pokemonNumber: 135, method: this.branchParse, layoutComponent: "appBranch"},
-                    {pokemonNumber: 136, method: this.branchParse, layoutComponent: "appBranch"}
-
-                ]
-
-            }
+	        }
         }
     }
 </script>

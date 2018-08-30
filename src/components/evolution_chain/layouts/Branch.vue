@@ -4,8 +4,8 @@
             <div class="col-2 text-center p-3" >
                 <router-link :to="{ name: 'pokemon-detail', params: { id: parsedChain[0].pokemon.number } }">
                     <img class="evolution-stage" :src="parsedChain[0].image">
-                    <div class="col-12 pt-1"> {{ parsedChain[0].pokemon.name }} </div>
                 </router-link>
+                <div class="col-12 pt-1"> {{ parsedChain[0].pokemon.name }} </div>
             </div>
             <div class="col-4 text-center p-3">
                 <div class="row">
@@ -16,10 +16,10 @@
                                     <img class="evolution-details" :src="require('../../../assets/images/right-chevron.png')">
                                 </div>
                                 <div class="col-6">
-                                    <router-link :to="{ name: 'pokemon-detail', params: { id: getPokemonNumber(evolvedPokemon.pokemon) } }">
+                                    <router-link :to="{ name: 'pokemon-detail', params: { id: getPokemonProperty(evolvedPokemon.pokemon, 'number') }}">
                                         <img class="evolution-stage" :src="evolvedPokemon.image">
                                     </router-link>
-                                    <div class="col-12"> {{ getPokemonName(evolvedPokemon.pokemon)  }} </div>
+                                    <div class="col-12"> {{ getPokemonProperty(evolvedPokemon.pokemon, 'name')  }} </div>
                                 </div>
                             </div>
                         </div>
@@ -32,29 +32,74 @@
 
 <script>
     export default {
-        name: "Linear",
-        props: ['parsedChain'],
+        name: "Branch",
+        props: ['chain'],
 
         created() {
-            console.log(this.parsedChain);
+            this.parse();
+        },
+
+        data() {
+
+        	return {
+        		parsedChain: []
+            }
         },
 
         methods: {
-            getPokemonName(pokemon) {
-                for(let prop in pokemon) {
-                    if(pokemon.hasOwnProperty(prop) && prop === 'name') {
-                        return pokemon[prop];
-                    }
-                }
-            },
-            getPokemonNumber(pokemon) {
-                for(let prop in pokemon) {
-                    if(pokemon.hasOwnProperty(prop) && prop === 'number') {
-                        return pokemon[prop];
-                    }
-                }
-            }
 
+        	parse() {
+
+		        let firstStage = this.chain.chain;
+
+		        let evolvedPokemon = this.findPokemonByName(firstStage.species.name);
+
+		        this.parsedChain.push({
+			        pokemon: evolvedPokemon,
+			        image: (typeof evolvedPokemon === 'undefined') ? require('../../../assets/images/notknown.png')
+				        : require(`../../../assets/static/pokemons/${evolvedPokemon.number}.png`)
+		        });
+
+		        let evolutions = [];
+
+		        firstStage.evolves_to.forEach(function (pokemon) {
+
+			        let evolvedPokemon = this.findPokemonByName(pokemon.species.name);
+
+			        evolutions.push({
+				        pokemon: evolvedPokemon,
+				        image: (typeof evolvedPokemon === 'undefined') ? require('../../../assets/images/notknown.png')
+					        : require(`../../../assets/static/pokemons/${evolvedPokemon.number}.png`)
+			        });
+
+		        }.bind(this));
+
+		        this.parsedChain.push(evolutions);
+
+            },
+
+	        getPokemonProperty(pokemon, property) {
+		        for (let prop in pokemon) {
+			        if (pokemon.hasOwnProperty(prop) && prop === property) {
+				        return pokemon[prop];
+			        }
+		        }
+	        },
+
+	        findPokemonByName(requestedPokemonName) {
+
+		        requestedPokemonName = requestedPokemonName.toLowerCase();
+
+		        return this.$store.getters.pokemonList.find(function(currentPokemon){
+
+			        let currentPokemonName = currentPokemon.hasOwnProperty('alias') ? currentPokemon.alias
+				        : currentPokemon.name.toLowerCase();
+
+			        return currentPokemonName === requestedPokemonName;
+
+		        }.bind(this));
+
+	        }
         }
 
     }
