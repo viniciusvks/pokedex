@@ -4,8 +4,9 @@
 
 <script>
 
-    import Linear from './layouts/Linear';
-    import Branch from './layouts/Branch';
+    import Linear from './layouts/Linear.vue';
+    import Branch from './layouts/Branch.vue';
+    import Fork from './layouts/Fork.vue';
 
     export default {
 
@@ -15,7 +16,8 @@
 	    components: {
 
 		    linearLayout: Linear,
-		    branchLayout: Branch
+		    branchLayout: Branch,
+		    forkLayout: Fork,
 
 	    },
 
@@ -23,6 +25,7 @@
 
 		    this.pokemon = this.findPokemonByName(this.pokemonName);
 		    this.layoutComponent = this.getLayoutComponent(this.pokemon);
+		    console.log(this.layoutComponent);
 	    },
 
 	    data() {
@@ -34,6 +37,16 @@
                 defaultLayoutComponent: "linearLayout",
 			    customLayoutComponents: [
 
+				    {pokemonNumber: 43, layoutComponent: "forkLayout"},
+				    {pokemonNumber: 44, layoutComponent: "forkLayout"},
+				    {pokemonNumber: 45, layoutComponent: "forkLayout"},
+                    {pokemonNumber: 60, layoutComponent: "forkLayout"},
+                    {pokemonNumber: 61, layoutComponent: "forkLayout"},
+                    {pokemonNumber: 62, layoutComponent: "forkLayout"},
+                    {pokemonNumber: 79, layoutComponent: "branchLayout"},
+                    {pokemonNumber: 80, layoutComponent: "branchLayout"},
+                    {pokemonNumber: 106, layoutComponent: "branchLayout"},
+                    {pokemonNumber: 107, layoutComponent: "branchLayout"},
 				    {pokemonNumber: 133, layoutComponent: "branchLayout"},
 				    {pokemonNumber: 134, layoutComponent: "branchLayout"},
 				    {pokemonNumber: 135, layoutComponent: "branchLayout"},
@@ -51,7 +64,7 @@
 
 		        for (let i = 0; i < len; i++) {
 			        if(this.customLayoutComponents[i].pokemonNumber === pokemon.number) {
-				        return this.customLayoutComponents[i];
+				        return this.customLayoutComponents[i].layoutComponent;
 			        }
 		        }
 

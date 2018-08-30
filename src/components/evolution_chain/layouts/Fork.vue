@@ -1,15 +1,32 @@
 <template>
     <div class="col-12">
         <div class="row justify-content-center align-items-center">
-            <div class="col-2 text-center p-3">
-                <router-link :to="{ name: 'pokemon-detail', params: { id: getPokemonProperty(parsedChain[0].pokemon, 'number') }}">
+            <div class="col-2 text-center p-3" >
+                <router-link :to="{ name: 'pokemon-detail', params: { id: parsedChain[0].pokemon.number } }">
                     <img class="evolution-stage" :src="parsedChain[0].image">
                 </router-link>
-                <div class="col-12 pt-1"> {{ getPokemonProperty(parsedChain[0].pokemon, 'name') }} </div>
+                <div class="col-12 pt-1"> {{ parsedChain[0].pokemon.name }} </div>
             </div>
             <div class="col-4 text-center p-3">
                 <div class="row">
-                    <template v-for="evolvedPokemon in parsedChain[1]">
+                    <div class="col-12">
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-3">
+                                <img class="evolution-details" :src="require('../../../assets/images/right-chevron.png')">
+                            </div>
+                            <div class="col-6">
+                                <router-link :to="{ name: 'pokemon-detail', params: { id: getPokemonProperty(parsedChain[1].pokemon, 'number') }}">
+                                    <img class="evolution-stage" :src="parsedChain[1].image">
+                                </router-link>
+                                <div class="col-12"> {{ getPokemonProperty(parsedChain[1].pokemon, 'name')  }} </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 text-center p-3">
+                <div class="row">
+                    <template v-for="evolvedPokemon in parsedChain[2]">
                         <div class="col-12">
                             <div class="row justify-content-center align-items-center">
                                 <div class="col-3">
@@ -32,7 +49,8 @@
 
 <script>
     export default {
-        name: "Branch",
+
+        name: "Fork",
         props: ['chain'],
 
         created() {
@@ -52,17 +70,27 @@
 
 		        let firstStage = this.chain.chain;
 
-		        let evolvedPokemon = this.findPokemonByName(firstStage.species.name);
+                let pokemon = this.findPokemonByName(firstStage.species.name);
 
-		        this.parsedChain.push({
-			        pokemon: evolvedPokemon,
-			        image: (typeof evolvedPokemon === 'undefined') ? require('../../../assets/images/notknown.png')
-				        : require(`../../../assets/static/pokemons/${evolvedPokemon.number}.png`)
-		        });
+                this.parsedChain.push({
+                    pokemon: pokemon,
+                    image: (typeof pokemon === 'undefined') ? require('../../../assets/images/notknown.png')
+                        : require(`../../../assets/static/pokemons/${pokemon.number}.png`)
+                });
+
+		        let secondStage = firstStage.evolves_to[0];
+
+                pokemon = this.findPokemonByName(secondStage.species.name);
+
+                this.parsedChain.push({
+                    pokemon: pokemon,
+                    image: (typeof pokemon === 'undefined') ? require('../../../assets/images/notknown.png')
+                        : require(`../../../assets/static/pokemons/${pokemon.number}.png`)
+                });
 
 		        let evolutions = [];
 
-		        firstStage.evolves_to.forEach(function (pokemon) {
+                secondStage.evolves_to.forEach(function (pokemon) {
 
 			        let evolvedPokemon = this.findPokemonByName(pokemon.species.name);
 

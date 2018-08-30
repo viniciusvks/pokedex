@@ -40,11 +40,11 @@
         margin-right: auto;
         width: 75%;
         height: 50%;
-        /*-webkit-filter: blur(50px);*/
-        /*-moz-filter: blur(50px);*/
-        /*-o-filter: blur(50px);*/
-        /*-ms-filter: blur(50px);*/
-        /*filter: blur(50px);*/
+        -webkit-filter: blur(50px);
+        -moz-filter: blur(50px);
+        -o-filter: blur(50px);
+        -ms-filter: blur(50px);
+        filter: blur(50px);
     }
 
     .card-footer {

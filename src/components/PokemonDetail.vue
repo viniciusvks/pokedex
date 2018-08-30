@@ -128,12 +128,12 @@
 
   .pokemon-img img{
       width: 100%;
-      /*height: 250px;*/
-      /*-webkit-filter: blur(50px);*/
-      /*-moz-filter: blur(50px);*/
-      /*-o-filter: blur(50px);*/
-      /*-ms-filter: blur(50px);*/
-      /*filter: blur(50px);*/
+      height: 250px;
+      -webkit-filter: blur(50px);
+      -moz-filter: blur(50px);
+      -o-filter: blur(50px);
+      -ms-filter: blur(50px);
+      filter: blur(50px);
   }
 
   .media img{
