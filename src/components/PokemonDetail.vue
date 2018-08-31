@@ -12,11 +12,11 @@
                 </div>
                 <div class="col-4">
                     <div class="row justify-content-center">
-                        <div class="col-12 p-4 pokemon-img"> <img :src="this.data.image"> </div>
+                        <div class="col-12 p-4 pokemon-img rounded" :class=this.data.types[0].type.name> <img :src="this.data.image"> </div>
                         <div class="col-12">
                             <div class="row justify-content-center mt-2 p-1 border-top border-bottom">
                                 <div class="media align-items-center " v-for="type in this.data.types">
-                                    <img :src="type">
+                                    <img :src="type.image">
                                 </div>
                             </div>
                         </div>
@@ -103,7 +103,8 @@
                 this.data.name = data.name;
                 this.data.image = require(`../assets/static/pokemons/${data.number}.png`);
                 this.data.types = data.types.map(type => {
-                    return require(`../assets/types/${type.type.name}.png`);
+                    type.image = require(`../assets/types/${type.type.name}.png`);
+                    return type;
                 });
 
                 this.data.description = data.description;
@@ -111,33 +112,54 @@
                 this.data.genera = data.genera;
 
             }
+        },
+
+        computed: {
+            typeClass() {
+                // console.log(this.data.types[0].type.name);
+                return this.data.types[0].type.name;
+            }
         }
     }
 </script>
 
 <style scoped>
 
-  div {
-    /*border: solid 1px #babaca;*/
-  }
+    /*template {*/
+        /*background: #FAD961 linear-gradient(121deg, #FAD961 0%, #F76B1C 100%);*/
+    /*}*/
 
-  .pokemon-img {
-      background: #f4f4f4;
-      /*background: #ace0f9;*/
-  }
+    div {
+        /*border: solid 1px #babaca;*/
+    }
 
-  .pokemon-img img{
-      width: 100%;
-      height: 250px;
-      -webkit-filter: blur(50px);
-      -moz-filter: blur(50px);
-      -o-filter: blur(50px);
-      -ms-filter: blur(50px);
-      filter: blur(50px);
-  }
+    .pokemon-img {
+        /*background: #f4f4f4;*/
+        /*background: #FAD961 linear-gradient(121deg, #FAD961 0%, #F76B1C 100%);*/
+        /*background: #ace0f9;*/
+    }
 
-  .media img{
+    .pokemon-img img {
+        width: 100%;
+        /*height: 250px;*/
+        /*-webkit-filter: blur(50px);*/
+        /*-moz-filter: blur(50px);*/
+        /*-o-filter: blur(50px);*/
+        /*-ms-filter: blur(50px);*/
+        /*filter: blur(50px);*/
+    }
+
+    .media img{
       height: 40px;
-  }
+    }
+
+    .fire {
+        background: #FAD961 linear-gradient(121deg, #FAD961 0%, #F76B1C 100%);
+    }
+
+    .water {
+        background: #80D0C7 linear-gradient(121deg, #80D0C7 0%, #0093E9 100%);
+
+    }
 
 </style>
