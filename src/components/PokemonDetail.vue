@@ -54,14 +54,80 @@
                         </div>
                         <div class="col-9 border-left">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="row">
-                                        <div class="col-12">hp</div>
-                                        <div class="col-12">speed</div>
-                                        <div class="col-12">attack</div>
-                                        <div class="col-12">defense</div>
-                                        <div class="col-12">special attack</div>
-                                        <div class="col-12">special defense</div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-4"><small>HP:</small></div>
+                                                <div class="col">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" :style="{width: statProgress(this.data.stats.hp.base_stat)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255">
+                                                            {{ this.data.stats.hp.base_stat }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-4"><small>Speed:</small></div>
+                                                <div class="col">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" :style="{width: statProgress(this.data.stats.speed.base_stat)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255">
+                                                            {{ this.data.stats.speed.base_stat }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-4"><small>Attack:</small></div>
+                                                <div class="col">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" :style="{width: statProgress(this.data.stats.attack.base_stat)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255">
+                                                            {{ this.data.stats.attack.base_stat }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-4"><small>Defense:</small></div>
+                                                <div class="col">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" :style="{width: statProgress(this.data.stats.defense.base_stat)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255">
+                                                            {{ this.data.stats.defense.base_stat }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-4"><small>Special Attack:</small></div>
+                                                <div class="col">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" :style="{width: statProgress(this.data.stats['special-attack'].base_stat)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255">
+                                                            {{ this.data.stats['special-attack'].base_stat }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-4"><small>Special Defense:</small></div>
+                                                <div class="col">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" :style="{width: statProgress(this.data.stats['special-defense'].base_stat)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255">
+                                                            {{ this.data.stats['special-defense'].base_stat }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +204,6 @@
                 this.currentStatus = status.LOADING;
                 this.$store.dispatch( 'fetchPokemonDetails', this.$route.params.id).then(data => {
 
-                    console.log(JSON.stringify(data, null, 4));
                     this.currentStatus = status.FETCHED;
                     this.mountData(data);
 
@@ -159,7 +224,36 @@
                     return type;
                 });
 
+                this.mountStats();
+
+            },
+
+            mountStats() {
+
+                let stats = {};
+
+                this.data.stats.forEach(function (entry) {
+
+                    stats[entry.stat.name] = {
+                        base_stat: entry.base_stat,
+                        effort: entry.effort,
+                        url: entry.stat.url
+                    }
+
+                }.bind(this));
+
+                this.data.stats = stats;
+
+                console.log(this.data.stats);
+
+            },
+
+            statProgress(value) {
+                console.log(`${(value/255)*100}%`);
+                return `${(value/255)*100}%`;
             }
+
+
         },
 
         computed: {
