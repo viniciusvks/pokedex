@@ -25,7 +25,6 @@
 
 		    this.pokemon = this.findPokemonByName(this.pokemonName);
 		    this.layoutComponent = this.getLayoutComponent(this.pokemon);
-		    console.log(this.layoutComponent);
 	    },
 
 	    data() {

@@ -197,6 +197,12 @@ export default new Vuex.Store({
             });
 
 		    pokemon.types = data.details.types;
+		    pokemon.weight = data.details.weight;
+		    pokemon.height = data.details.height;
+            pokemon.gender_rate = data.species.gender_rate;
+		    pokemon.stats = data.details.stats;
+            pokemon.base_experience = data.details.base_experience;
+            pokemon.capture_rate = data.species.capture_rate;
 		    pokemon.description = uniqueEntries.join(' ');
 		    pokemon.genera = genera.genus;
 		    pokemon.evolutionChain = data.evolutionChain;
@@ -212,7 +218,6 @@ export default new Vuex.Store({
 
 	            id = parseInt(id);
                 let pokemon = context.state.pokemonList.find(pokemon => {
-                	console.log(pokemon.number+' === '+id);
                     return pokemon.number === id;
                 });
 

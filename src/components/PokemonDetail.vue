@@ -1,33 +1,85 @@
 <template>
     <div class="card p-3">
         <div class="col-12">
-
             <app-loading-panel v-if="this.currentStatus === status.LOADING"></app-loading-panel>
             <app-error-panel v-if="this.currentStatus === status.ERROR"></app-error-panel>
             <div class="row" v-if="this.currentStatus === status.FETCHED">
-                <div class="col-12 mt-2"><h1 class="card-title">{{ this.data.name }}</h1></div>
-                <div class="col-12"><h6 class="card-subtitle mb-3 text-muted">{{ this.data.genera }}</h6></div>
-                <div class="col-8">
-                    <p class="card-text text-justify ">{{ this.data.description }}</p>
-                </div>
-                <div class="col-4">
-                    <div class="row justify-content-center">
-                        <div class="col-12 p-4 pokemon-img rounded" :class=this.data.types[0].type.name> <img :src="this.data.image"> </div>
-                        <div class="col-12">
-                            <div class="row justify-content-center mt-2 p-1 border-top border-bottom">
-                                <div class="media align-items-center " v-for="type in this.data.types">
-                                    <img :src="type.image">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-12 p-4 pokemon-img w-50 rounded" :class=this.data.types[0].type.name>
+                                    <img :src="this.data.image">
+                                </div>
+                                <div class="col-12 text-center"><h5 class="m-0">{{ this.data.name }}</h5></div>
+                                <div class="col-12 text-center text-muted card-subtitle"><small>{{ this.data.genera }}</small></div>
+                                <div class="col-12 text-center">
+                                    <div class="row justify-content-center p-1 border-top">
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="col-12">{{ this.data.weight | weight}}</div>
+                                                <div class="col-12"><small class="text-muted">Weight</small></div>
+                                            </div>
+                                        </div>
+                                        <div class="col border-left border-right">
+                                            <div class="row justify-content-center">
+                                                <div class="media" v-for="type in this.data.types">
+                                                    <img :src="type.image">
+                                                </div>
+                                                <div class="col-12"><small class="text-muted">Types</small></div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="col-12">{{ this.data.height | height}}</div>
+                                                <div class="col-12"><small class="text-muted">Height</small></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="col-12 border-top">-->
+                                <!--<div class="row justify-content-center">-->
+                                <!--<div class="col-1 media">-->
+                                <!--<img :src="require('../assets/images/female.png')">-->
+                                <!--</div>-->
+                                <!--<div class="col">-->
+
+                                <!--</div>-->
+                                <!--<div class="col-1 media">-->
+                                <!--<img :src="require('../assets/images/male.png')">-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                        <div class="col-9 border-left">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-12">hp</div>
+                                        <div class="col-12">speed</div>
+                                        <div class="col-12">attack</div>
+                                        <div class="col-12">defense</div>
+                                        <div class="col-12">special attack</div>
+                                        <div class="col-12">special defense</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12 border-top">
+                            <p class="card-text text-justify ">{{ this.data.description }}</p>
+                        </div>
+                        <div class="col-12"><hr></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center"><h4 class="card-subtitle">Evolution chain</h4></div>
+                        <app-evolution-chain :pokemonName=this.data.name :chain=this.data.evolutionChain></app-evolution-chain>
+                        <div class="col-12"><hr></div>
+                    </div>
                 </div>
-                <div class="col-12"><hr></div>
-                <div class="col-12 text-center"><h4 class="card-subtitle">Evolution chain</h4></div>
-                <app-evolution-chain :pokemonName=this.data.name :chain=this.data.evolutionChain></app-evolution-chain>
-                <div class="col-12"><hr></div>
             </div>
-
         </div>
     </div>
 </template>
@@ -86,6 +138,7 @@
                 this.currentStatus = status.LOADING;
                 this.$store.dispatch( 'fetchPokemonDetails', this.$route.params.id).then(data => {
 
+                    console.log(JSON.stringify(data, null, 4));
                     this.currentStatus = status.FETCHED;
                     this.mountData(data);
 
@@ -99,17 +152,12 @@
 
             mountData(data) {
 
-                this.data.number = data.number;
-                this.data.name = data.name;
+                this.data = data;
                 this.data.image = require(`../assets/static/pokemons/${data.number}.png`);
                 this.data.types = data.types.map(type => {
                     type.image = require(`../assets/types/${type.type.name}.png`);
                     return type;
                 });
-
-                this.data.description = data.description;
-                this.data.evolutionChain = data.evolutionChain;
-                this.data.genera = data.genera;
 
             }
         },
@@ -125,10 +173,6 @@
 
 <style scoped>
 
-    /*template {*/
-        /*background: #FAD961 linear-gradient(121deg, #FAD961 0%, #F76B1C 100%);*/
-    /*}*/
-
     div {
         /*border: solid 1px #babaca;*/
     }
@@ -141,16 +185,11 @@
 
     .pokemon-img img {
         width: 100%;
-        /*height: 250px;*/
-        /*-webkit-filter: blur(50px);*/
-        /*-moz-filter: blur(50px);*/
-        /*-o-filter: blur(50px);*/
-        /*-ms-filter: blur(50px);*/
         /*filter: blur(50px);*/
     }
 
     .media img{
-      height: 40px;
+      height: 24px;
     }
 
     .fire {
