@@ -159,6 +159,18 @@
 
     .water {
         background: #80D0C7 linear-gradient(121deg, #80D0C7 0%, #0093E9 100%);
+    }
+
+    .grass {
+        background: #F4D03F linear-gradient(132deg, #F4D03F 0%, #16A085 100%);
+    }
+
+    .poison {
+        background: #7200de linear-gradient(135deg, #7200de 1%, #FC00FF 99%);
+    }
+
+    .electric {
+        background: #ff7e52 linear-gradient(327deg, #ff7e52 0%, #fffd2c 65%);
 
     }
 
