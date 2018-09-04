@@ -203,6 +203,8 @@ export default new Vuex.Store({
 		    pokemon.stats = data.details.stats;
             pokemon.base_experience = data.details.base_experience;
             pokemon.capture_rate = data.species.capture_rate;
+            pokemon.egg_groups = data.species.egg_groups;
+            pokemon.hatch_counter = data.species.hatch_counter;
 		    pokemon.description = uniqueEntries.join(' ');
 		    pokemon.genera = genera.genus;
 		    pokemon.evolutionChain = data.evolutionChain;

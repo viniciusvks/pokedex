@@ -37,31 +37,67 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--<div class="col-12 border-top">-->
-                                <!--<div class="row justify-content-center">-->
-                                <!--<div class="col-1 media">-->
-                                <!--<img :src="require('../assets/images/female.png')">-->
-                                <!--</div>-->
-                                <!--<div class="col">-->
-
-                                <!--</div>-->
-                                <!--<div class="col-1 media">-->
-                                <!--<img :src="require('../assets/images/male.png')">-->
-                                <!--</div>-->
-                                <!--</div>-->
-                                <!--</div>-->
+                                <div class="col-12 border-top pt-1">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-1 p-0">
+                                            <div class="media">
+                                                <img :src="require('../assets/images/female.png')">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" :style="{width: statProgress(data.gender_rate)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255"></div>
+                                                <div class="progress-bar bg-primary" role="progressbar" :style="{width: 100 - statProgress(data.gender_rate)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1 media p-0">
+                                            <img :src="require('../assets/images/male.png')">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-9 border-left">
                             <div class="row">
-                                <div class="col"><app-stats :data="this.data.stats" class="border-right"></app-stats></div>
-                                <div class="col"><app-doughnut :chart-data=this.capture_rate></app-doughnut></div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-12 text-center mb-2"> Stats </div>
+                                        <div class="col-12 border-right">
+                                            <app-stats :data="this.data.stats"></app-stats>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3 pb-5">
+                                    <div class="row">
+                                        <div class="col-12 text-center mb-2"> Capture Rate </div>
+                                        <div class="col-12 border-right">
+                                            <app-capture-rate :value = this.data.capture_rate></app-capture-rate>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-12 text-center mb-2"> Egg Groups </div>
+                                        <div class="col-12 text-center">
+                                            <div class="row">
+                                                <div class="col" v-for="group in this.data.egg_groups">
+                                                    {{ group.name }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-center mt-2"> Hatch steps </div>
+                                        <div class="col-12 text-center"> {{ this.data.hatch_steps }} </div>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="row border-top">
 
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 border-top">
+                    <div class="row mt-2">
+                        <div class="col-12 border-top pt-2">
                             <p class="card-text text-justify ">{{ this.data.description }}</p>
                         </div>
                         <div class="col-12"><hr></div>
@@ -83,7 +119,7 @@
     import LoadingPanel from './LoadingPanel';
     import ErrorPanel from './ErrorPanel';
     import Stats from './Stats';
-    import Doughnut from 'vue-chartjs';
+    import CaptureRate from './CaptureRate';
     import { status } from '../config';
 
     export default {
@@ -92,7 +128,7 @@
 
         components: {
             appStats: Stats,
-            appDoughnut: Doughnut,
+            appCaptureRate: CaptureRate,
             appEvolutionChain: EvolutionChain,
             appLoadingPanel: LoadingPanel,
             appErrorPanel: ErrorPanel
@@ -155,12 +191,11 @@
                     type.image = require(`../assets/types/${type.type.name}.png`);
                     return type;
                 });
+                this.data.capture_rate = Math.round((this.data.capture_rate/255)*100);
+                this.data.hatch_steps = (this.data.hatch_counter + 1) * 255;
+                this.data.gender_rate = this.data.gender_rate < 0 ? 0 : this.data.gender_rate;
 
                 this.mountStats();
-
-                this.capture_rate = {
-                    capture_rate: this.data.capture_rate
-                }
 
             },
 
@@ -181,6 +216,11 @@
                 this.data.stats = stats;
 
                 // console.log(this.data.stats);
+            },
+
+            statProgress(value) {
+                console.log(`${(value*0.125)*100}%`);
+                return `${(value*0.125)*100}%`;
             }
         },
 
