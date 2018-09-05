@@ -6,7 +6,7 @@
             <div class="row" v-if="this.currentStatus === status.FETCHED">
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-3 border-right">
                             <div class="row justify-content-center align-items-center p-2">
                                 <div class="col-12 p-4 pokemon-img w-50 rounded" :class=this.data.types[0].type.name>
                                     <img :src="this.data.image">
@@ -42,36 +42,57 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-9 border-left">
+                        <div class="col-9">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="row">
                                         <div class="col-12 text-center mb-2"> Stats </div>
-                                        <div class="col-12 border-right">
+                                        <div class="col-12 border-bottom mb-2">
                                             <app-stats :data="this.data.stats"></app-stats>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-12 text-center mb-2"> <small>Base Happiness</small> </div>
+                                                <div class="col-12 text-center">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" :style="{width: happinessProgress(this.data.base_happiness)+'%'}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255">
+                                                            {{ this.data.base_happiness }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-12 text-center mt-2"> <small>Growth Rate</small> </div>
+                                                <div class="col-12 text-center"> {{ this.data.growth_rate.name }} </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-3 pb-5">
                                     <div class="row">
                                         <div class="col-12 text-center mb-2"> Capture Rate </div>
-                                        <div class="col-12 border-right">
+                                        <div class="col-12 border-right border-left mb-2">
                                             <app-capture-rate :value = this.data.capture_rate></app-capture-rate>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-3">
-                                    <div class="row">
-                                        <div class="col-12 text-center mb-2"> Egg Groups </div>
-                                        <div class="col-12 text-center">
-                                            <div class="row justify-content-center align-items-center">
-                                                <div class="col-2 badge badge-primary mr-1" v-for="group in this.data.egg_groups">
-                                                    {{ group.name }}
-                                                </div>
-                                            </div>
+                                    <div class="row text-center p-1">
+                                        <div class="col-12  mb-2"> Habitat </div>
+                                        <div class="col-12">
+                                            <img :src="require(`../assets/habitats/${this.data.habitat.name}.png`)">
                                         </div>
-                                        <div class="col-12 text-center mt-2"> Hatch steps </div>
-                                        <div class="col-12 text-center"> {{ this.data.hatch_steps }} </div>
+                                        <div class="col-12 text-muted">
+                                            <small>{{ this.data.habitat.name }}</small>
+                                        </div>
+                                        <div class="col-12 border-top pt-1"> Egg Groups </div>
+                                        <div class="col-12 border-bottom">
+                                            <app-egg-group :groups=data.egg_groups></app-egg-group>
+                                        </div>
+                                        <div class="col-12 mt-2"> Hatch steps </div>
+                                        <div class="col-12"> {{ this.data.hatch_steps }} </div>
                                     </div>
                                 </div>
                             </div>
@@ -105,6 +126,7 @@
     import Stats from './Stats';
     import CaptureRate from './CaptureRate';
     import GenderRate from './GenderRate';
+    import EggGroup from './EggGroup';
     import { status } from '../config';
 
     export default {
@@ -115,6 +137,7 @@
             appStats: Stats,
             appCaptureRate: CaptureRate,
             appGenderRate: GenderRate,
+            appEggGroup: EggGroup,
             appEvolutionChain: EvolutionChain,
             appLoadingPanel: LoadingPanel,
             appErrorPanel: ErrorPanel
@@ -200,12 +223,15 @@
 
                 this.data.stats = stats;
 
-                // console.log(this.data.stats);
             },
 
             statProgress(value) {
                 console.log(`${(value*0.125)*100}%`);
                 return `${(value*0.125)*100}%`;
+            },
+
+            happinessProgress(value) {
+                return (value/255)*100;
             }
         }
     }
