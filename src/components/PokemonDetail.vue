@@ -38,23 +38,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 border-top pt-1">
-                                    <div class="row justify-content-center align-items-center">
-                                        <div class="col-1 p-0">
-                                            <div class="media">
-                                                <img :src="require('../assets/images/female.png')">
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar" :style="{width: statProgress(data.gender_rate)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255"></div>
-                                                <div class="progress-bar bg-primary" role="progressbar" :style="{width: 100 - statProgress(data.gender_rate)}" aria-valuenow="80" aria-valuemin="0" aria-valuemax="255">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-1 media p-0">
-                                            <img :src="require('../assets/images/male.png')">
-                                        </div>
-                                    </div>
+                                    <app-gender-rate :value="this.data.gender_rate"></app-gender-rate>
                                 </div>
                             </div>
                         </div>
@@ -80,8 +64,8 @@
                                     <div class="row">
                                         <div class="col-12 text-center mb-2"> Egg Groups </div>
                                         <div class="col-12 text-center">
-                                            <div class="row">
-                                                <div class="col" v-for="group in this.data.egg_groups">
+                                            <div class="row justify-content-center align-items-center">
+                                                <div class="col-2 badge badge-primary mr-1" v-for="group in this.data.egg_groups">
                                                     {{ group.name }}
                                                 </div>
                                             </div>
@@ -120,6 +104,7 @@
     import ErrorPanel from './ErrorPanel';
     import Stats from './Stats';
     import CaptureRate from './CaptureRate';
+    import GenderRate from './GenderRate';
     import { status } from '../config';
 
     export default {
@@ -129,6 +114,7 @@
         components: {
             appStats: Stats,
             appCaptureRate: CaptureRate,
+            appGenderRate: GenderRate,
             appEvolutionChain: EvolutionChain,
             appLoadingPanel: LoadingPanel,
             appErrorPanel: ErrorPanel
@@ -193,7 +179,6 @@
                 });
                 this.data.capture_rate = Math.round((this.data.capture_rate/255)*100);
                 this.data.hatch_steps = (this.data.hatch_counter + 1) * 255;
-                this.data.gender_rate = this.data.gender_rate < 0 ? 0 : this.data.gender_rate;
 
                 this.mountStats();
 
@@ -221,13 +206,6 @@
             statProgress(value) {
                 console.log(`${(value*0.125)*100}%`);
                 return `${(value*0.125)*100}%`;
-            }
-        },
-
-        computed: {
-            typeClass() {
-                // console.log(this.data.types[0].type.name);
-                return this.data.types[0].type.name;
             }
         }
     }
