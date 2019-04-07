@@ -9,12 +9,3 @@ export const status = Object.freeze({
     ERROR: STATUS_ERROR
 
 });
-
-export const evolutionChainType = Object.freeze({
-
-    LINEAR: 0,
-    LINEAR: 1,
-    LINEAR: 2,
-    MULTIPLE: 3
-
-});
