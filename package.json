@@ -11,13 +11,14 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "chart.js": "^2.7.2",
-    "npm": "^6.3.0",
+    "chart.js": "^2.8.0",
+    "npm": "^6.9.0",
     "pokeapi-js-wrapper": "^1.1.1",
-    "vue": "^2.5.11",
-    "vue-chartjs": "^3.4.0",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vue": "^2.6.10",
+    "vue-chartjs": "^3.4.2",
+    "vue-loader": "^14.2.4",
+    "vue-router": "^3.0.2",
+    "vuex": "^3.1.0"
   },
   "browserslist": [
     "> 1%",
@@ -26,15 +27,15 @@
   ],
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
+    "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.0.5",
-    "css-loader": "^0.28.7",
+    "css-loader": "^2.1.1",
     "file-loader": "^1.1.4",
-    "vue-loader": "^13.0.5",
-    "vue-template-compiler": "^2.4.4",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1"
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1"
   }
 }
