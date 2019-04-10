@@ -26,7 +26,7 @@ The current version provides info about the 150 pokémons from 1st generation wi
 
 ## Build Setup
 
-This apps requires NodeJS and npm to run. After you have both installed, just run the follow commands to build
+This app requires NodeJS and npm to run. After you have both installed, just run the follow commands to build
 and run the application.
 
 ``` bash
