@@ -3,7 +3,7 @@
 A pokedex powered by [pokeapi](https://github.com/PokeAPI/pokeapi) and [VueJS](https://github.com/vuejs/vue) 
 
 ## Features:
-The current versions info about the 150 pokémon from 1st generation the following features:
+The current versions info about the 150 pokémon from 1st generation with the following features:
 
  * Name
  * Type
