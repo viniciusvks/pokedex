@@ -2,6 +2,28 @@
 
 A pokedex powered by [pokeapi](https://github.com/PokeAPI/pokeapi) and [VueJS](https://github.com/vuejs/vue) 
 
+## Features:
+The current versions info about the 150 pokémon from 1st generation the following features:
+
+ * Name
+ * Type
+ * Description
+ * Height
+ * Weight
+ * Gender Rate
+ * Stats (HP, Speed, Attack, Defense, Special Attack, Special Defense)
+ * Capture Rate
+ * Habitat
+ * Egg Groups
+ * hatch Steps
+ * Base Happiness
+ * Growth Rate
+
+![](screenshots/home.png)
+<br>
+<br>
+![](screenshots/detail.png)
+
 ## Build Setup
 
 This apps requires NodeJS and npm to run. After you have both installed, just run the follow commands to build
